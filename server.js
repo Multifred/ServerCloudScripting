@@ -50,6 +50,8 @@ handlers.addCityBuilding =function(args)
         PlayFabId: currentPlayerId,
         Keys: ["cityMap"]
     });
+	if(playerData.Data["cityMap"] == undefined)
+		playerData.Data["cityMap"] = createEmptyMap();
 	
 	var playerDataCityMap = null;
 	
@@ -65,6 +67,104 @@ handlers.addCityBuilding =function(args)
         }
     });
 	return {idcheck:playerDataCityMap.nextId};
+}
+
+handlers.addDefBuilding =function(args)
+{
+	var entity = args;
+	var playerData = server.GetUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Keys: ["defMap"]
+    });
+	if(playerData.Data["defMap"] == undefined)
+		playerData.Data["defMap"] = createEmptyMap();
+	
+	var playerDataDefenseMap = JSON.parse(playerData.Data["defMap"].Value);
+	
+	playerDataDefenseMap.entitiesOnMap.push(entity);
+	playerDataDefenseMap.nextId += 1; 
+	
+	var updateUserDataResult = server.UpdateUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Data: {
+            "defMap": JSON.stringify(playerDataDefenseMap)
+        }
+    });
+	return {idcheck:playerDataDefenseMap.nextId};
+}
+
+handlers.changeStateEntity =function(args)
+{
+	var updateData = args;
+	var mapKey = updateData.isDefense?"defMap":"cityMap";
+	
+	var playerData = server.GetUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Keys: [mapKey]
+    });
+	if(playerData.Data[mapKey] == undefined)
+		playerData.Data[mapKey] = createEmptyMap();
+	
+	var playerDataMap = JSON.parse(playerData.Data[mapKey].Value);
+	var isUpdateOk = false;
+	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
+	{
+		if(playerDataMap.entitiesOnMap[i].id == updateData.id)
+		{
+			playerDataMap.entitiesOnMap[i].currentState = updateData.currentState;
+			playerData.entitiesOnMap[i].timestamp = Date.now()
+			isUpdateOk = true;
+			break;
+		}
+	}
+	if(isUpdateOk)
+	{
+		var updateUserDataResult = server.UpdateUserReadOnlyData({
+			PlayFabId: currentPlayerId,
+			Data: {
+				mapKey: JSON.stringify(playerDataMap)
+			}
+		});
+		return true;
+	}
+	return false;
+}
+
+handlers.changePositionEntity =function(args)
+{
+	var updateData = args;
+	var mapKey = updateData.isDefense?"defMap":"cityMap";
+	
+	var playerData = server.GetUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Keys: [mapKey]
+    });
+	if(playerData.Data[mapKey] == undefined)
+		playerData.Data[mapKey] = createEmptyMap();
+	
+	var playerDataMap = JSON.parse(playerData.Data[mapKey].Value);
+	var isUpdateOk = false;
+	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
+	{
+		if(playerDataMap.entitiesOnMap[i].id == updateData.id)
+		{
+			playerDataMap.entitiesOnMap[i].coordonates.i = updateData.i;
+			playerDataMap.entitiesOnMap[i].coordonates.j = updateData.j;
+			isUpdateOk = true;
+			break;
+		}
+	}
+	if(isUpdateOk)
+	{
+		var updateUserDataResult = server.UpdateUserReadOnlyData({
+			PlayFabId: currentPlayerId,
+			Data: {
+				mapKey: JSON.stringify(playerDataMap)
+			}
+		});
+		return true;
+	}
+	return false;
 }
 
 // This is a function that the game client would call whenever a player completes
@@ -115,6 +215,11 @@ handlers.updatePlayerMove = function (args) {
     return { validMove: validMove };
 }
 
+
+function createEmptyMap()
+{
+	return {nextId:0, entitiesOnMap:new Array()};
+}
 
 // This is a helper function that verifies that the player's move wasn't made
 // too quickly following their previous move, according to the rules of the game.
