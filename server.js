@@ -43,7 +43,7 @@ handlers.helloWorld = function (args) {
     return { messageValue: message, timestamp: now };
 }
 
-function getMap(var mapKey)
+function getMap(mapKey)
 {
 	var playerData = server.GetUserReadOnlyData({
         PlayFabId: currentPlayerId,
