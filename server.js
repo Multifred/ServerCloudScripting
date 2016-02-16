@@ -43,19 +43,25 @@ handlers.helloWorld = function (args) {
     return { messageValue: message, timestamp: now };
 }
 
+function getMap(var mapKey)
+{
+	var playerData = server.GetUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Keys: [mapKey]
+    });
+	var result;
+	if(playerData.Data[mapKey] == undefined)
+		result = createEmptyMap();
+	else
+		result = JSON.parse(playerData.Data[mapKey].Value);
+	
+	return result;
+}
+
 handlers.addCityBuilding =function(args)
 {
 	var entity = args;
-	var playerData = server.GetUserReadOnlyData({
-        PlayFabId: currentPlayerId,
-        Keys: ["cityMap"]
-    });
-	if(playerData.Data["cityMap"] == undefined)
-		playerData.Data["cityMap"] = createEmptyMap();
-	
-	var playerDataCityMap = null;
-	
-	playerDataCityMap = JSON.parse(playerData.Data["cityMap"].Value);
+	var playerDataCityMap = getMap("cityMap")
 	
 	playerDataCityMap.entitiesOnMap.push(entity);
 	playerDataCityMap.nextId += 1; 
@@ -72,15 +78,8 @@ handlers.addCityBuilding =function(args)
 handlers.addDefBuilding =function(args)
 {
 	var entity = args;
-	var playerData = server.GetUserReadOnlyData({
-        PlayFabId: currentPlayerId,
-        Keys: ["defMap"]
-    });
-	if(playerData.Data["defMap"] == undefined)
-		playerData.Data["defMap"] = createEmptyMap();
-	
-	var playerDataDefenseMap = JSON.parse(playerData.Data["defMap"].Value);
-	
+	var playerDataDefenseMap = getMap("defMap")
+
 	playerDataDefenseMap.entitiesOnMap.push(entity);
 	playerDataDefenseMap.nextId += 1; 
 	
@@ -98,14 +97,7 @@ handlers.changeStateEntity =function(args)
 	var updateData = args;
 	var mapKey = updateData.isDefense?"defMap":"cityMap";
 	
-	var playerData = server.GetUserReadOnlyData({
-        PlayFabId: currentPlayerId,
-        Keys: [mapKey]
-    });
-	if(playerData.Data[mapKey] == undefined)
-		playerData.Data[mapKey] = createEmptyMap();
-	
-	var playerDataMap = JSON.parse(playerData.Data[mapKey].Value);
+	var playerDataMap = getMap(mapKey);
 	var isUpdateOk = false;
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
@@ -135,14 +127,7 @@ handlers.changePositionEntity =function(args)
 	var updateData = args;
 	var mapKey = updateData.isDefense?"defMap":"cityMap";
 	
-	var playerData = server.GetUserReadOnlyData({
-        PlayFabId: currentPlayerId,
-        Keys: [mapKey]
-    });
-	if(playerData.Data[mapKey] == undefined)
-		playerData.Data[mapKey] = createEmptyMap();
-	
-	var playerDataMap = JSON.parse(playerData.Data[mapKey].Value);
+	var playerDataMap = getMap(mapKey);
 	var isUpdateOk = false;
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
