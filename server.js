@@ -94,7 +94,7 @@ handlers.addCityBuilding =function(args)
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
         PlayFabId: currentPlayerId,
         Data: {
-            "cityMap": JSON.stringify(playerDataCityMap)
+            "cityMap": JSON.stringify(playerDataCityMap),
 			"nextID": nextID + ""
         }
     });
@@ -120,7 +120,7 @@ handlers.addDefBuilding =function(args)
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
         PlayFabId: currentPlayerId,
         Data: {
-            "defMap": JSON.stringify(playerDataCityMap)
+            "defMap": JSON.stringify(playerDataCityMap),
 			"nextID": nextID + ""
         }
     });
