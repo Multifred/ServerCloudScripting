@@ -43,61 +43,96 @@ handlers.helloWorld = function (args) {
     return { messageValue: message, timestamp: now };
 }
 
-function getMap(mapKey)
+function getPlayerDataForMap(mapKey)
 {
 	var playerData = server.GetUserReadOnlyData({
         PlayFabId: currentPlayerId,
-        Keys: [mapKey]
+        Keys: [mapKey, "nextID"]
     });
-	var result;
-	if(playerData.Data[mapKey] == undefined)
-		result = createEmptyMap();
-	else
-		result = JSON.parse(playerData.Data[mapKey].Value);
 	
-	return result;
+	return playerData;
+}
+
+
+function createEmptyMap()
+{
+	return {entitiesOnMap:new Array()};
+}
+
+handlers.startNewGame = function(args)
+{
+	var updateUserDataResult = server.UpdateUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Data: {
+			"curUpgd":"-1",
+			"lvl":"1",
+			"nextID":"0",
+			"name":"",
+			"tuto":"true",
+            "cityMap": JSON.stringify(createEmptyMap()),
+			"defMap": JSON.stringify(createEmptyMap())
+        }
+    });
 }
 
 handlers.addCityBuilding =function(args)
 {
 	var entity = args;
-	var playerDataCityMap = getMap("cityMap")
+	var playerData = getPlayerDataForMap("cityMap")
+	
+	var playerDataCityMap;
+	if(playerData.Data[mapKey] == undefined)
+		playerDataCityMap = createEmptyMap();
+	else
+		playerDataCityMap = JSON.parse(playerData.Data[mapKey].Value);
 	
 	playerDataCityMap.entitiesOnMap.push(entity);
-	playerDataCityMap.nextId += 1; 
+	
+	var nextID = parseInt(playerData.Data["nextID"]); 
+	nextID++;
 	
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
         PlayFabId: currentPlayerId,
         Data: {
             "cityMap": JSON.stringify(playerDataCityMap)
+			"nextID": nextID + ""
         }
     });
-	return {idcheck:playerDataCityMap.nextId};
+	return {idcheck:nextID};
 }
 
 handlers.addDefBuilding =function(args)
 {
 	var entity = args;
-	var playerDataDefenseMap = getMap("defMap")
-
-	playerDataDefenseMap.entitiesOnMap.push(entity);
-	playerDataDefenseMap.nextId += 1; 
+	var playerData = getPlayerDataForMap("defMap")
+	
+	var playerDataCityMap;
+	if(playerData.Data[mapKey] == undefined)
+		playerDataCityMap = createEmptyMap();
+	else
+		playerDataCityMap = JSON.parse(playerData.Data[mapKey].Value);
+	
+	playerDataCityMap.entitiesOnMap.push(entity);
+	
+	var nextID = parseInt(playerData.Data["nextID"]); 
+	nextID++;
 	
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
         PlayFabId: currentPlayerId,
         Data: {
-            "defMap": JSON.stringify(playerDataDefenseMap)
+            "defMap": JSON.stringify(playerDataCityMap)
+			"nextID": nextID + ""
         }
     });
-	return {idcheck:playerDataDefenseMap.nextId};
+	return {idcheck:nextID};
 }
-
+/*
 handlers.changeStateEntity =function(args)
 {
 	var updateData = args;
 	var mapKey = updateData.isDefense?"defMap":"cityMap";
 	
-	var playerDataMap = getMap(mapKey);
+	var playerData = getPlayerDataForMap(mapKey);
 	var isUpdateOk = false;
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
@@ -151,7 +186,7 @@ handlers.changePositionEntity =function(args)
 	}
 	return false;
 }
-
+*/
 // This is a function that the game client would call whenever a player completes
 // a level. It updates a setting in the player's data that only game server
 // code can write - it is read-only on the client - and it updates a player
@@ -201,10 +236,6 @@ handlers.updatePlayerMove = function (args) {
 }
 
 
-function createEmptyMap()
-{
-	return {nextId:0, entitiesOnMap:new Array()};
-}
 
 // This is a helper function that verifies that the player's move wasn't made
 // too quickly following their previous move, according to the rules of the game.
