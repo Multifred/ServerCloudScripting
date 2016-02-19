@@ -88,7 +88,7 @@ handlers.addCityBuilding =function(args)
 	
 	playerDataCityMap.entitiesOnMap.push(entity);
 	
-	var nextID = parseInt(playerData.Data["nextID"]); 
+	var nextID = parseInt(playerData.Data["nextID"].Value);
 	nextID++;
 	
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
@@ -114,7 +114,7 @@ handlers.addDefBuilding =function(args)
 	
 	playerDataCityMap.entitiesOnMap.push(entity);
 	
-	var nextID = parseInt(playerData.Data["nextID"]); 
+	var nextID = parseInt(playerData.Data["nextID"].Value); 
 	nextID++;
 	
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
