@@ -81,10 +81,10 @@ handlers.addCityBuilding =function(args)
 	var playerData = getPlayerDataForMap("cityMap")
 	
 	var playerDataCityMap;
-	if(playerData.Data[mapKey] == undefined)
+	if(playerData.Data["cityMap"] == undefined)
 		playerDataCityMap = createEmptyMap();
 	else
-		playerDataCityMap = JSON.parse(playerData.Data[mapKey].Value);
+		playerDataCityMap = JSON.parse(playerData.Data["cityMap"].Value);
 	
 	playerDataCityMap.entitiesOnMap.push(entity);
 	
@@ -107,10 +107,10 @@ handlers.addDefBuilding =function(args)
 	var playerData = getPlayerDataForMap("defMap")
 	
 	var playerDataCityMap;
-	if(playerData.Data[mapKey] == undefined)
+	if(playerData.Data["defMap"] == undefined)
 		playerDataCityMap = createEmptyMap();
 	else
-		playerDataCityMap = JSON.parse(playerData.Data[mapKey].Value);
+		playerDataCityMap = JSON.parse(playerData.Data["defMap"].Value);
 	
 	playerDataCityMap.entitiesOnMap.push(entity);
 	
