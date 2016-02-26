@@ -171,7 +171,7 @@ handlers.moveEntity =function(args)
     });
 	
 	var isUpdateOk = false;
-	var playerDataMap = JSON.parse(playerData.Data[mapKey]);
+	var playerDataMap = JSON.parse(playerData.Data[mapKey].Value);
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
