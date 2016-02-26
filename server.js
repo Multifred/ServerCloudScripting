@@ -177,22 +177,26 @@ handlers.moveEntity =function(args)
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
 			log.debug("Set new coordonates of entity #" + args.id + " to (" + args.coordonates.i+","+args.coordonates.j+")");
-			playerDataMap.entitiesOnMap[i].coordonates = args.coordonates;
+			var entity = playerDataMap.entitiesOnMap[i];
+			entity.coordonates = args.coordonates;
+			playerDataMap.entitiesOnMap[i] = entity;
 			isUpdateOk = true;
 			break;
 		}
 	}
+	
 	if(isUpdateOk)
 	{
+		var value = JSON.stringify(playerDataMap);
 		var updateUserDataResult = server.UpdateUserReadOnlyData({
 			PlayFabId: currentPlayerId,
 			Data: {
-				mapKey: JSON.stringify(playerDataMap)
+				mapKey: value
 			}
 		});
-		return updateUserDataResult;
+		return value;
 	}
-	return null;
+	return "";
 }
 
 // This is a function that the game client would call whenever a player completes
