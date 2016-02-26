@@ -189,9 +189,9 @@ handlers.moveEntity =function(args)
 				mapKey: JSON.stringify(playerDataMap)
 			}
 		});
-		return true;
+		return updateUserDataResult;
 	}
-	return false;
+	return null;
 }
 
 // This is a function that the game client would call whenever a player completes
