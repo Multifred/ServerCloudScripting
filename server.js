@@ -150,11 +150,12 @@ handlers.changeStateEntity =function(args)
 	}
 	if(isUpdateOk)
 	{
+		var value = JSON.stringify(playerDataMap);
+		var data = {};
+		data[mapKey] = value;
 		var updateUserDataResult = server.UpdateUserReadOnlyData({
 			PlayFabId: currentPlayerId,
-			Data: {
-				mapKey: JSON.stringify(playerDataMap)
-			}
+			Data: data
 		});
 		return true;
 	}
@@ -176,10 +177,7 @@ handlers.moveEntity =function(args)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
-			log.debug("Set new coordonates of entity #" + args.id + " to (" + args.coordonates.i+","+args.coordonates.j+")");
-			var entity = playerDataMap.entitiesOnMap[i];
-			entity.coordonates = args.coordonates;
-			playerDataMap.entitiesOnMap[i] = entity;
+			playerDataMap.entitiesOnMap[i].coordonates = args.coordonates;
 			isUpdateOk = true;
 			break;
 		}
@@ -194,9 +192,9 @@ handlers.moveEntity =function(args)
 			PlayFabId: currentPlayerId,
 			Data: data
 		});
-		return value;
+		return true;
 	}
-	return "";
+	return false;
 }
 
 // This is a function that the game client would call whenever a player completes
