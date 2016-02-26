@@ -176,6 +176,7 @@ handlers.moveEntity =function(args)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
+			log.debug("Set new coordonates of entity #" + args.id + " to (" + args.coordonates.i+","+args.coordonates.j+")");
 			playerDataMap.entitiesOnMap[i].coordonates = args.coordonates;
 			isUpdateOk = true;
 			break;
