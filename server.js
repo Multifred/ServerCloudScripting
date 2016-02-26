@@ -167,7 +167,7 @@ handlers.moveEntity =function(args)
 	
 	var playerData = server.GetUserReadOnlyData({
         PlayFabId: currentPlayerId,
-        Keys: [mapKey, "curUpgd"]
+        Keys: [mapKey]
     });
 	
 	var isUpdateOk = false;
