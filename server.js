@@ -143,7 +143,7 @@ handlers.changeStateEntity =function(args)
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
 			playerDataMap.entitiesOnMap[i].currentState = args.newState;
-			playerDataMap.entitiesOnMap[i].timestamp = args.timestamp
+			playerDataMap.entitiesOnMap[i].timestamp = args.timestamp;
 			isUpdateOk = true;
 			break;
 		}
@@ -176,7 +176,7 @@ handlers.moveEntity =function(args)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
-			playerDataMap.entitiesOnMap[i].coordonates = args.coordonates
+			playerDataMap.entitiesOnMap[i].coordonates = args.coordonates;
 			isUpdateOk = true;
 			break;
 		}
