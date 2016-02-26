@@ -137,7 +137,7 @@ handlers.changeStateEntity =function(args)
     });
 	
 	var isUpdateOk = false;
-	var playerDataMap = playerData.Data[mapKey];
+	var playerDataMap = JSON.parse(playerData.Data[mapKey].Value);
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
@@ -171,7 +171,7 @@ handlers.moveEntity =function(args)
     });
 	
 	var isUpdateOk = false;
-	var playerDataMap = playerData.Data[mapKey];
+	var playerDataMap = JSON.parse(playerData.Data[mapKey]);
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
