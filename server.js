@@ -188,11 +188,11 @@ handlers.moveEntity =function(args)
 	if(isUpdateOk)
 	{
 		var value = JSON.stringify(playerDataMap);
+		var data = {};
+		data[mapKey] = value;
 		var updateUserDataResult = server.UpdateUserReadOnlyData({
 			PlayFabId: currentPlayerId,
-			Data: {
-				mapKey: value
-			}
+			Data: data
 		});
 		return value;
 	}
