@@ -64,7 +64,6 @@ handlers.startNewGame = function(args)
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
         PlayFabId: currentPlayerId,
         Data: {
-			"curUpgd":"-1",
 			"lvl":"1",
 			"nextID":"0",
 			"name":"",
@@ -133,7 +132,7 @@ handlers.changeStateEntity =function(args)
 	
 	var playerData = server.GetUserReadOnlyData({
         PlayFabId: currentPlayerId,
-        Keys: [mapKey, "curUpgd"]
+        Keys: [mapKey]
     });
 	
 	var isUpdateOk = false;
@@ -145,6 +144,7 @@ handlers.changeStateEntity =function(args)
 			playerDataMap.entitiesOnMap[i].currentState = args.newState;
 			playerDataMap.entitiesOnMap[i].timestamp = args.timestamp;
 			isUpdateOk = true;
+			
 			break;
 		}
 	}
