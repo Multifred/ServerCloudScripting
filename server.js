@@ -126,20 +126,24 @@ handlers.addDefBuilding =function(args)
     });
 	return {idcheck:nextID};
 }
-/*
+
 handlers.changeStateEntity =function(args)
 {
-	var updateData = args;
-	var mapKey = updateData.isDefense?"defMap":"cityMap";
+	var mapKey = args.isDefense?"defMap":"cityMap";
 	
-	var playerData = getPlayerDataForMap(mapKey);
+	var playerData = server.GetUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Keys: [mapKey, "curUpgd"]
+    });
+	
 	var isUpdateOk = false;
+	var playerDataMap = playerData.Data[mapKey];
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
-		if(playerDataMap.entitiesOnMap[i].id == updateData.id)
+		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
-			playerDataMap.entitiesOnMap[i].currentState = updateData.currentState;
-			playerData.entitiesOnMap[i].timestamp = Date.now()
+			playerDataMap.entitiesOnMap[i].currentState = args.newState;
+			playerDataMap.entitiesOnMap[i].timestamp = args.timestamp
 			isUpdateOk = true;
 			break;
 		}
@@ -157,19 +161,22 @@ handlers.changeStateEntity =function(args)
 	return false;
 }
 
-handlers.changePositionEntity =function(args)
+handlers.moveEntity =function(args)
 {
-	var updateData = args;
-	var mapKey = updateData.isDefense?"defMap":"cityMap";
+	var mapKey = args.isDefense?"defMap":"cityMap";
 	
-	var playerDataMap = getMap(mapKey);
+	var playerData = server.GetUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Keys: [mapKey, "curUpgd"]
+    });
+	
 	var isUpdateOk = false;
+	var playerDataMap = playerData.Data[mapKey];
 	for(var i=0; i<playerDataMap.entitiesOnMap.length; i++)
 	{
-		if(playerDataMap.entitiesOnMap[i].id == updateData.id)
+		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
-			playerDataMap.entitiesOnMap[i].coordonates.i = updateData.i;
-			playerDataMap.entitiesOnMap[i].coordonates.j = updateData.j;
+			playerDataMap.entitiesOnMap[i].coordonates = args.coordonates
 			isUpdateOk = true;
 			break;
 		}
@@ -186,7 +193,7 @@ handlers.changePositionEntity =function(args)
 	}
 	return false;
 }
-*/
+
 // This is a function that the game client would call whenever a player completes
 // a level. It updates a setting in the player's data that only game server
 // code can write - it is read-only on the client - and it updates a player
