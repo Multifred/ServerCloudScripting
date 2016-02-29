@@ -141,7 +141,7 @@ handlers.changeStateEntity =function(args)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args.id)
 		{
-			playerDataMap.entitiesOnMap[i].currentState = args.newState;
+			playerDataMap.entitiesOnMap[i].currentState = args.newStateNodeID;
 			playerDataMap.entitiesOnMap[i].timestamp = args.timestamp;
 			isUpdateOk = true;
 			
