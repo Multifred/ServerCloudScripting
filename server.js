@@ -180,6 +180,8 @@ handlers.addMineBuilding =function(args)
 	return {idcheck:nextID};
 }
 
+public enum MapType{City, Defense, Whale, Mine}
+
 handlers.changeStateEntity =function(args)
 {
 	var mapKey = "cityMap";
