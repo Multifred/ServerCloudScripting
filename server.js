@@ -183,11 +183,11 @@ handlers.addMineBuilding =function(args)
 handlers.changeStateEntity =function(args)
 {
 	var mapKey = "cityMap";
-	if (args.mapType == MapType.Defense)
+	if (args.mapType == 1)//MapType.Defense)
 		mapKey = "defMap";
-	if (args.mapType == MapType.Whale)
+	if (args.mapType == 2)//MapType.Whale)
 		mapKey = "whaleMap";
-	if (args.mapType == MapType.Mine)
+	if (args.mapType == 3)//MapType.Mine)
 		mapKey = "mineMap";
 	
 	var playerData = server.GetUserReadOnlyData({
@@ -225,11 +225,11 @@ handlers.changeStateEntity =function(args)
 handlers.moveEntity =function(args)
 {
 	var mapKey = "cityMap";
-	if (args.mapType == MapType.Defense)
+	if (args.mapType == 1)//MapType.Defense)
 		mapKey = "defMap";
-	if (args.mapType == MapType.Whale)
+	if (args.mapType == 2)//MapType.Whale)
 		mapKey = "whaleMap";
-	if (args.mapType == MapType.Mine)
+	if (args.mapType == 3)//MapType.Mine)
 		mapKey = "mineMap";
 	
 	var playerData = server.GetUserReadOnlyData({
