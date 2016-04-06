@@ -69,7 +69,9 @@ handlers.startNewGame = function(args)
 			"name":"",
 			"tuto":"true",
             "cityMap": JSON.stringify(createEmptyMap()),
-			"defMap": JSON.stringify(createEmptyMap())
+			"defMap": JSON.stringify(createEmptyMap()),
+			"whaleMap": JSON.stringify(createEmptyMap()),
+			"mineMap": JSON.stringify(createEmptyMap())
         }
     });
 }
@@ -126,9 +128,67 @@ handlers.addDefBuilding =function(args)
 	return {idcheck:nextID};
 }
 
+handlers.addWhaleBuilding =function(args)
+{
+	var entity = args;
+	var playerData = getPlayerDataForMap("whaleMap")
+	
+	var playerDataCityMap;
+	if(playerData.Data["whaleMap"] == undefined)
+		playerDataCityMap = createEmptyMap();
+	else
+		playerDataCityMap = JSON.parse(playerData.Data["whaleMap"].Value);
+	
+	playerDataCityMap.entitiesOnMap.push(entity);
+	
+	var nextID = parseInt(playerData.Data["nextID"].Value);
+	nextID++;
+	
+	var updateUserDataResult = server.UpdateUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Data: {
+            "whaleMap": JSON.stringify(playerDataCityMap),
+			"nextID": nextID + ""
+        }
+    });
+	return {idcheck:nextID};
+}
+
+handlers.addMineBuilding =function(args)
+{
+	var entity = args;
+	var playerData = getPlayerDataForMap("mineMap")
+	
+	var playerDataCityMap;
+	if(playerData.Data["mineMap"] == undefined)
+		playerDataCityMap = createEmptyMap();
+	else
+		playerDataCityMap = JSON.parse(playerData.Data["mineMap"].Value);
+	
+	playerDataCityMap.entitiesOnMap.push(entity);
+	
+	var nextID = parseInt(playerData.Data["nextID"].Value);
+	nextID++;
+	
+	var updateUserDataResult = server.UpdateUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Data: {
+            "mineMap": JSON.stringify(playerDataCityMap),
+			"nextID": nextID + ""
+        }
+    });
+	return {idcheck:nextID};
+}
+
 handlers.changeStateEntity =function(args)
 {
-	var mapKey = args.isDefense?"defMap":"cityMap";
+	var mapKey = "cityMap";
+	if (args.mapType == MapType.Defense)
+		mapKey = "defMap";
+	if (args.mapType == MapType.Whale)
+		mapKey = "whaleMap";
+	if (args.mapType == MapType.Mine)
+		mapKey = "mineMap";
 	
 	var playerData = server.GetUserReadOnlyData({
         PlayFabId: currentPlayerId,
@@ -164,7 +224,13 @@ handlers.changeStateEntity =function(args)
 
 handlers.moveEntity =function(args)
 {
-	var mapKey = args.isDefense?"defMap":"cityMap";
+	var mapKey = "cityMap";
+	if (args.mapType == MapType.Defense)
+		mapKey = "defMap";
+	if (args.mapType == MapType.Whale)
+		mapKey = "whaleMap";
+	if (args.mapType == MapType.Mine)
+		mapKey = "mineMap";
 	
 	var playerData = server.GetUserReadOnlyData({
         PlayFabId: currentPlayerId,
