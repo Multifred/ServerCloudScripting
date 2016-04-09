@@ -119,16 +119,20 @@ handlers.removeCityBuilding =function(args)
 		{
 			playerDataMap.entitiesOnMap.splice(i, 1);
 			found = true;
+			break;
 		}
 	}
-	
-	var updateUserDataResult = server.UpdateUserReadOnlyData({
-        PlayFabId: currentPlayerId,
-        Data: {
-            "cityMap": JSON.stringify(playerDataCityMap),
-			"nextID": nextID + ""
-        }
-    });
+	if(found)
+	{
+		var updateUserDataResult = server.UpdateUserReadOnlyData({
+			PlayFabId: currentPlayerId,
+			Data: {
+			    "cityMap": JSON.stringify(playerDataCityMap),
+					"nextID": nextID + ""
+			}
+		});
+	}
+    
 	return {hasBeenRemoved:found};
 }
 handlers.addDefBuilding =function(args)
