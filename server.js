@@ -104,6 +104,33 @@ handlers.addCityBuilding =function(args)
 	return {idcheck:nextID};
 }
 
+handlers.removeCityBuilding =function(args)
+{
+	var entityID = args;
+	var playerData = getPlayerDataForMap("cityMap")
+	
+	var playerDataMap = JSON.parse(playerData.Data["cityMap"].Value);
+	
+	playerDataMap.entitiesOnMap.push(entity);
+	var found = false;
+	for(int i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
+	{
+		if(playerDataMap.entitiesOnMap[i].id == args)
+		{
+			playerDataMap.entitiesOnMap.splice(i, 1);
+			found = true;
+		}
+	}
+	
+	var updateUserDataResult = server.UpdateUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Data: {
+            "cityMap": JSON.stringify(playerDataCityMap),
+			"nextID": nextID + ""
+        }
+    });
+	return {hasBeenRemoved:found};
+}
 handlers.addDefBuilding =function(args)
 {
 	var entity = args;
