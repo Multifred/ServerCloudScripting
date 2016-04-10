@@ -126,8 +126,7 @@ handlers.removeCityBuilding =function(args)
 		var updateUserDataResult = server.UpdateUserReadOnlyData({
 			PlayFabId: currentPlayerId,
 			Data: {
-			    "cityMap": JSON.stringify(playerDataCityMap),
-					"nextID": nextID + ""
+			    "cityMap": JSON.stringify(playerDataCityMap)
 			}
 		});
 	}
