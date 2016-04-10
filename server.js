@@ -112,7 +112,7 @@ handlers.removeCityBuilding =function(args)
 	var playerDataMap = JSON.parse(playerData.Data["cityMap"].Value);
 	
 	var found = false;
-	for(int i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
+	for(var i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
 	{
 		if(playerDataMap.entitiesOnMap[i].id == args)
 		{
