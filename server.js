@@ -158,7 +158,35 @@ handlers.addDefBuilding =function(args)
     });
 	return {idcheck:nextID};
 }
-
+handlers.removeDefBuilding =function(args)
+{
+	var entityID = args;
+	var playerData = getPlayerDataForMap("defMap")
+	
+	var playerDataMap = JSON.parse(playerData.Data["defMap"].Value);
+	
+	var found = false;
+	for(var i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
+	{
+		if(playerDataMap.entitiesOnMap[i].id == args)
+		{
+			playerDataMap.entitiesOnMap.splice(i, 1);
+			found = true;
+			break;
+		}
+	}
+	if(found)
+	{
+		var updateUserDataResult = server.UpdateUserReadOnlyData({
+			PlayFabId: currentPlayerId,
+			Data: {
+			    "defMap": JSON.stringify(playerDataMap)
+			}
+		});
+	}
+    
+	return {hasBeenRemoved:found};
+}
 handlers.addWhaleBuilding =function(args)
 {
 	var entity = args;
