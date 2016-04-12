@@ -114,7 +114,7 @@ handlers.removeCityBuilding =function(args)
 	var found = false;
 	for(var i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
 	{
-		if(playerDataMap.entitiesOnMap[i].id == parseInt(args))
+		if(playerDataMap.entitiesOnMap[i].id == entityID.id)
 		{
 			playerDataMap.entitiesOnMap.splice(i, 1);
 			found = true;
