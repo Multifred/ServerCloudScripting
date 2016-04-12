@@ -168,7 +168,7 @@ handlers.removeDefBuilding =function(args)
 	var found = false;
 	for(var i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
 	{
-		if(playerDataMap.entitiesOnMap[i].id == args)
+		if(playerDataMap.entitiesOnMap[i].id == entityID.id)
 		{
 			playerDataMap.entitiesOnMap.splice(i, 1);
 			found = true;
@@ -212,7 +212,35 @@ handlers.addWhaleBuilding =function(args)
     });
 	return {idcheck:nextID};
 }
-
+handlers.removeWellBuilding =function(args)
+{
+	var entityID = args;
+	var playerData = getPlayerDataForMap("whaleMap")
+	
+	var playerDataMap = JSON.parse(playerData.Data["whaleMap"].Value);
+	
+	var found = false;
+	for(var i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
+	{
+		if(playerDataMap.entitiesOnMap[i].id == entityID.id)
+		{
+			playerDataMap.entitiesOnMap.splice(i, 1);
+			found = true;
+			break;
+		}
+	}
+	if(found)
+	{
+		var updateUserDataResult = server.UpdateUserReadOnlyData({
+			PlayFabId: currentPlayerId,
+			Data: {
+			    "whaleMap": JSON.stringify(playerDataMap)
+			}
+		});
+	}
+    
+	return {hasBeenRemoved:found};
+}
 handlers.addMineBuilding =function(args)
 {
 	var entity = args;
@@ -238,7 +266,35 @@ handlers.addMineBuilding =function(args)
     });
 	return {idcheck:nextID};
 }
-
+handlers.removeMineBuilding =function(args)
+{
+	var entityID = args;
+	var playerData = getPlayerDataForMap("mineMap")
+	
+	var playerDataMap = JSON.parse(playerData.Data["mineMap"].Value);
+	
+	var found = false;
+	for(var i = playerDataMap.entitiesOnMap.length -1 ; i>=0; i--)
+	{
+		if(playerDataMap.entitiesOnMap[i].id == entityID.id)
+		{
+			playerDataMap.entitiesOnMap.splice(i, 1);
+			found = true;
+			break;
+		}
+	}
+	if(found)
+	{
+		var updateUserDataResult = server.UpdateUserReadOnlyData({
+			PlayFabId: currentPlayerId,
+			Data: {
+			    "mineMap": JSON.stringify(playerDataMap)
+			}
+		});
+	}
+    
+	return {hasBeenRemoved:found};
+}
 handlers.changeStateEntity =function(args)
 {
 	var mapKey = "cityMap";
