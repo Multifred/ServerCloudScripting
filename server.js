@@ -75,9 +75,6 @@ handlers.startNewGame = function(args)
 	updateUserDataResult = server.UpdateUserReadOnlyData({
         PlayFabId: currentPlayerId,
         Data: {
-			"att":"",
-			"def":"",
-			"name":"",
 			"defMap": def,
 			"whaleMap": JSON.stringify(createEmptyMap()),
 			"mineMap": JSON.stringify(createEmptyMap())
@@ -88,6 +85,7 @@ handlers.startNewGame = function(args)
 	updateUserDataResult = server.UpdateUserData({
 		PlayFabId: currentPlayerId,
         Data: {
+			"name":"$no_name",
 			"missile_att":"",
 			"missile_def":"",
 			"missile_niv":""
