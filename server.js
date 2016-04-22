@@ -66,16 +66,43 @@ handlers.startNewGame = function(args)
 	var updateUserDataResult = server.UpdateUserReadOnlyData({
         PlayFabId: currentPlayerId,
         Data: {
-			"lvl":"1",
 			"nextID":"70",
-			"name":"",
 			"tuto":"true",
-            "cityMap": city,
+			"cityMap": city,
+		}
+	});
+	
+	updateUserDataResult = server.UpdateUserReadOnlyData({
+        PlayFabId: currentPlayerId,
+        Data: {
+			"att":"",
+			"def":"",
+			"name":"",
 			"defMap": def,
 			"whaleMap": JSON.stringify(createEmptyMap()),
 			"mineMap": JSON.stringify(createEmptyMap())
-        }
+        },
+		Permission:"Public"
     });
+	
+	updateUserDataResult = server.UpdateUserData({
+		PlayFabId: currentPlayerId,
+        Data: {
+			"missile_att":"",
+			"missile_def":"",
+			"missile_niv":""
+        },
+		Permission:"Public"
+	});
+}
+
+handlers.getPlayerStatistics = function(args)
+{
+	var playfabID = args.playerID;
+	var playerStatistics = server.GetPlayerStatistics({
+		PlayFabId: playfabID
+	});
+	return {Stats:playerStatistics.UserStatistics};
 }
 
 handlers.addCityBuilding =function(args)
