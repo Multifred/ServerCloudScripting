@@ -237,7 +237,7 @@ handlers.addWhaleBuilding =function(args)
     });
 	return {idcheck:nextID};
 }
-handlers.removeWellBuilding =function(args)
+handlers.removeWhaleBuilding =function(args)
 {
 	var entityID = args;
 	var playerData = getPlayerDataForMap("whaleMap")
