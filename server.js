@@ -68,7 +68,6 @@ handlers.startNewGame = function(args)
         PlayFabId: currentPlayerId,
         Data: {
 			"nextID":"160",
-			"tuto":"true",
 			"cityMap": city,
 		}
 	});
@@ -86,6 +85,7 @@ handlers.startNewGame = function(args)
 	updateUserDataResult = server.UpdateUserData({
 		PlayFabId: currentPlayerId,
         Data: {
+			"tuto":"true",
 			"name":"$no_name",
 			"missile_att":"",
 			"missile_def":"",
